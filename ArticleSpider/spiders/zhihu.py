@@ -2,7 +2,7 @@
 import scrapy
 import re
 import json
-import requests
+import os
 try:
     from urllib import parse
 except:
@@ -26,7 +26,7 @@ class ZhihuSpider(scrapy.Spider):
         'DOWNLOAD_DELAY': 3,
     }
 
-    with open('cookies.txt') as f:
+    with open(os.path.join(os.path.dirname(__file__),'cookies.txt')) as f:
         cookies = f.read()
     cookie_dict = {}
     for cookie in cookies.split(';'):
@@ -84,7 +84,7 @@ class ZhihuSpider(scrapy.Spider):
 
         # 不想花太多时间 debug cookie和header设置的不正确，所以现在就每次都打开文件看看吧
         cookies = {}
-        with open('cookies.txt') as f:
+        with open(os.path.join(os.path.dirname(__file__),'cookies.txt')) as f:
             raw_cookies = f.read()
         for line in raw_cookies.split(';'):
             key, value = line.split('=', 1)
