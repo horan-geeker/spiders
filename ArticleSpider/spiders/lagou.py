@@ -4,20 +4,30 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from ArticleSpider.items import ArticleItemLoader, LagouJob
 import re
+from selenium import webdriver
 
 class LagouSpider(CrawlSpider):
     name = 'lagou'
     allowed_domains = ['www.lagou.com']
     start_urls = ['https://www.lagou.com']
 
+    headers = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4,la;q=0.2',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        "Host": "www.lagou.com",
+        'Pragma': 'no-cache',
+        'Referer': 'https://www.lagou.com/',
+        'Upgrade-Insecure-Requests': '1',
+        # 'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36",
+    }
+
     custom_settings = {
-        'COOKIES_ENABLED':True,
-        'DOWNLOAD_DELAY': 3,
-        'DEFAULT_REQUEST_HEADERS': {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'en',
-            # 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
-        }
+        'COOKIES_ENABLED': True,
+        # 'DOWNLOAD_DELAY': 3,
+        'DEFAULT_REQUEST_HEADERS': headers
     }
 
     rules = (
@@ -25,6 +35,10 @@ class LagouSpider(CrawlSpider):
         Rule(LinkExtractor(allow=r'/gongsi/j\d+.html'), follow=True),
         Rule(LinkExtractor(allow=r'/jobs/\d+.html'), callback='parse_job', follow=True),
     )
+
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.browser = webdriver.Chrome(executable_path="/opt/chromedriver")
 
     def parse_job(self, response):
         item_loader = ArticleItemLoader(item=LagouJob(), response=response)

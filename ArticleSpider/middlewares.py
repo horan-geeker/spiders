@@ -10,7 +10,6 @@ import time
 from scrapy import signals
 from scrapy.http import HtmlResponse
 from PIL import Image
-from zheye.zheye import zheye
 from selenium import webdriver
 
 
@@ -100,40 +99,8 @@ class RandomIpProxyMiddleware(object):
 class JsPageMiddleware(object):
 
     def process_request(self, request, spider):
-        if spider.name=='zhihu':
+        if spider.name=='lagou':
             spider.browser.get(request.url)
-            time.sleep(2)
-            if request.url == 'https://www.zhihu.com/#signin':
-                time.sleep(1)
-                spider.browser.find_element_by_css_selector("span.signin-switch-password:nth-child(1)").click()
-                spider.browser.find_element_by_css_selector("input[name='account']").send_keys("13571899655")
-                spider.browser.find_element_by_css_selector("input[name='password']").send_keys("hejunwei3269982")
-                time.sleep(5)
-
-                captcha_element = spider.browser.find_element_by_css_selector("div.Captcha-imageConatiner img.Captcha-image")
-                spider.browser.save_screenshot('zhihu_captcha.png')
-                left = captcha_element.location['x'] * 2
-                top = captcha_element.location['y'] * 2
-                right = captcha_element.location['x'] + captcha_element.size['width']
-                bottom = captcha_element.location['y'] + captcha_element.size['height']
-
-                im = Image.open('zhihu_captcha.png')
-                im = im.crop((left, top, left+400, top+88))
-                im.save('zhihu_captcha.png')
-
-                z = zheye()
-                positions = z.Recognize('zhihu_captcha.png')
-                action = webdriver.common.action_chains.ActionChains(spider.browser)
-                for point in positions:
-                    action.move_to_element_with_offset(captcha_element, point[0], point[1])
-                    action.click()
-                    action.perform()
-                spider.browser.find_element_by_css_selector("button.submit").click()
             print("访问：{0}".format(request.url))
-
             body = spider.browser.page_source
-
-            if '/answers' in request.url:
-                body = spider.browser.find_element_by_tag_name("pre").text
-
             return HtmlResponse(url=spider.browser.current_url, body=body, encoding='utf-8', request=request)
