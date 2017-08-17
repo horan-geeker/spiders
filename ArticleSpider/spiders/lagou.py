@@ -38,7 +38,7 @@ class LagouSpider(CrawlSpider):
 
     def __init__(self, **kwargs):
         super().__init__()
-        self.browser = webdriver.Chrome(executable_path="/opt/chromedriver")
+        self.browser = webdriver.Firefox(executable_path="/opt/geckodriver")
 
     def parse_job(self, response):
         item_loader = ArticleItemLoader(item=LagouJob(), response=response)
