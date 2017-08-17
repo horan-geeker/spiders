@@ -27,7 +27,7 @@ class LagouSpider(CrawlSpider):
 
     custom_settings = {
         'COOKIES_ENABLED': True,
-        # 'DOWNLOAD_DELAY': 3,
+        'DOWNLOAD_DELAY': 3,
         'DEFAULT_REQUEST_HEADERS': headers
     }
 
