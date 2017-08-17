@@ -5,6 +5,7 @@ from scrapy.spiders import CrawlSpider, Rule
 from ArticleSpider.items import ArticleItemLoader, LagouJob
 import re
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 class LagouSpider(CrawlSpider):
     name = 'lagou'
@@ -38,7 +39,12 @@ class LagouSpider(CrawlSpider):
 
     def __init__(self, **kwargs):
         super().__init__()
-        self.browser = webdriver.Firefox(executable_path="/opt/geckodriver")
+        dcap = dict(DesiredCapabilities.PHANTOMJS)
+        dcap["phantomjs.page.settings.userAgent"] = (
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53 "
+            "(KHTML, like Gecko) Chrome/15.0.87"
+        )
+        self.browser = webdriver.PhantomJS(executable_path="/opt/phantomjs", desired_capabilities=dcap)
 
     def parse_job(self, response):
         item_loader = ArticleItemLoader(item=LagouJob(), response=response)
