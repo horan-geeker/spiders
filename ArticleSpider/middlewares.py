@@ -100,6 +100,7 @@ class JsPageMiddleware(object):
 
     def process_request(self, request, spider):
         if spider.name=='lagou':
+            time.sleep(3)
             spider.browser.get(request.url)
             print("访问：{0}".format(request.url))
             body = spider.browser.page_source
