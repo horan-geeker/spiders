@@ -6,7 +6,7 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import codecs
 import json
-from scrapy.pipelines.images import ImagesPipeline
+# from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exporters import JsonItemExporter
 import MySQLdb
 import MySQLdb.cursors
@@ -46,13 +46,13 @@ class JsonExporterPipeline(object):
         return item
 
 
-class ArticleImagePipeline(ImagesPipeline):
-    def item_completed(self, results, item, info):
-        if "thumb_path" in item:
-            for ok, value in results:
-                image_path = value["path"]
-            item["thumb_path"] = image_path
-        return item
+# class ArticleImagePipeline(ImagesPipeline):
+#     def item_completed(self, results, item, info):
+#         if "thumb_path" in item:
+#             for ok, value in results:
+#                 image_path = value["path"]
+#             item["thumb_path"] = image_path
+#         return item
 
 
 class MysqlPipeline(object):

@@ -2,7 +2,7 @@
 import scrapy
 import re
 import json
-import os
+
 try:
     from urllib import parse
 except:

@@ -9,11 +9,6 @@ import time
 
 from scrapy import signals
 from scrapy.http import HtmlResponse
-from PIL import Image
-from selenium import webdriver
-
-
-# from scrapy.contrib.downloadermiddleware.useragent import UserAgentMiddleware
 
 
 class ArticlespiderSpiderMiddleware(object):
