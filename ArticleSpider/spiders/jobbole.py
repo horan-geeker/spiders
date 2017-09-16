@@ -8,8 +8,8 @@ from ArticleSpider.items import ArticleItemLoader
 from ArticleSpider.utils.common import md5
 from ArticleSpider.items import ArticleItemLoader
 from selenium import webdriver
-from scrapy.xlib.pydispatch import dispatcher
-from scrapy import signals
+# from scrapy.xlib.pydispatch import dispatcher
+# from scrapy import signals
 
 class JobboleSpider(scrapy.Spider):
     name = "jobbole"
@@ -17,15 +17,15 @@ class JobboleSpider(scrapy.Spider):
     start_urls = ['http://blog.jobbole.com/all-posts/']
     # start_urls = ['https://www.majialichen.com']
 
-    def __init__(self, **kwargs):
-        self.browser = webdriver.Chrome(executable_path="C:/opt/selenium/chromedriver.exe")
-        super().__init__()
-        #触发关闭信号时回调函数进行处理
-        dispatcher.connect(self.spider_closed, signals.spider_closed)
+    # def __init__(self, **kwargs):
+    #     self.browser = webdriver.Chrome(executable_path="C:/opt/selenium/chromedriver.exe")
+    #     super().__init__()
+    #     #触发关闭信号时回调函数进行处理
+    #     dispatcher.connect(self.spider_closed, signals.spider_closed)
 
-    def spider_closed(self, spider):
-        print("close browser")
-        self.browser.quit()
+    # def spider_closed(self, spider):
+    #     print("close browser")
+    #     self.browser.quit()
 
     def parse(self, response):
         url_list = response.css('#archive .post-thumb a')
